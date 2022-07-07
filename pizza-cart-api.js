@@ -50,7 +50,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             message : 'Eating pizzas',
-            username: 'avermeulen',
+            username: '0192081',
             pizzas : [],
             cartId : '',
             cart : { total : 0 },
