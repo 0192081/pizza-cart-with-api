@@ -1,0 +1,80 @@
+body {
+    background-color: whitesmoke;
+
+
+} 
+
+.Pizzas{
+    display: flex;
+
+}
+
+.Small_Pizza{
+    background-color: lightgreen;
+    /* padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    width: 30%; */
+    
+}
+.Medium_Pizza {
+    background-color: peru;
+    /* padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    width: 30%; */
+    
+}
+.Large_Pizza {
+    background-color: skyblue;
+    /* padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    width: 30%; */
+   
+}
+
+.pizza{
+    padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    width: 40%;
+
+}
+.Contact_Us{
+    background-color: palevioletred;
+    padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    
+}
+
+h1 {
+    background-color: palevioletred;
+    text-align: center;
+}
+
+@media (max-width:765px) {
+    .Pizzas{
+        display: inline-block;
+    
+    }
+    
+    
+.pizza{
+    padding: 1em;
+    border-radius: 1em;
+    margin: 1em;
+    width: 70%;
+
+}
+
+  
+  .message{
+    background-color: blanchedalmond;
+    padding: 1em;
+    border-radius: 1em;
+
+  }
+
+  

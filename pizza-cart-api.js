@@ -49,7 +49,12 @@ document.addEventListener('alpine:init', () => {
                  
             },
 
-            message : 'Eating pizzas',
+            pizzaImage(pizza) {
+                return `/img/${pizza.size}.png`
+            },
+  
+
+        
             username: '0192081',
             pizzas : [],
             cartId : '',
