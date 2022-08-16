@@ -4,6 +4,14 @@ document.addEventListener('alpine:init', () => {
 
     Alpine.data('pizzaCartWithAPIWidget', function () {
         return {
+            Pizzas: [],
+            username: '',
+            cartId: '',
+            paymentmessage: '',
+            payNow: false,
+            paymentAmount: 0,
+            message: '',
+
             init() {
                 // alert('pizza cart loading...')
                 // call the API to getall the pizzas
@@ -50,7 +58,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             pizzaImage(pizza) {
-                return `/img/${pizza.size}.png`
+                return `./img/${pizza.size}.png`
             },
   
 
