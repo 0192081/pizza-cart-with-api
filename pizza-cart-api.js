@@ -1,92 +1,140 @@
 document.addEventListener('alpine:init', () => {
+  Alpine.data('pizzaCartWithAPIWidget', function() {
+    return {
 
-    // alert("Alpine loaded...")
+      init(){
+          //alert('pizza loading..')
+          //call pizza API
+          axios
+              .get('https://pizza-cart-api.herokuapp.com/api/pizzas')
+              .then((result)=>{
+                  //console.log(result.data);
+              this.pizzas= result.data.pizzas
+        })
+        .then(()=>{
+          return this.createCart();
+        })
+        .then((result)=>{
+          this.cartId = result.data.cart_code;
+        });
+      },
+      featuredPizzas(){
+        //Get a list of featured pizzas
+        return axios
+            .get('https://pizza-cart-api.herokuapp.com/api/pizzas/featured')
+      },
+      postfeaturedPizzas(){
+        //Get a list of featured pizzas
+        return axios
+            .post('https://pizza-cart-api.herokuapp.com/api/pizzas/featured')
+      },
 
-    Alpine.data('pizzaCartWithAPIWidget', function () {
-        return {
-            Pizzas: [],
-            username: '',
-            cartId: '',
-            paymentmessage: '',
-            payNow: false,
-            paymentAmount: 0,
-            message: '',
+      createCart(){
+        ///api/pizza-cart/create
+        return axios
+            .get('https://pizza-cart-api.herokuapp.com/api/pizza-cart/create?username=' + this.username)
+      },
 
-            init() {
-                // alert('pizza cart loading...')
-                // call the API to getall the pizzas
-                // set this.pizzas 
+      showCart(){
+        const url = `https://pizza-cart-api.herokuapp.com/api/pizza-cart/${this.cartId}/get`;
 
-                axios
-                    .get('https://pizza-cart-api.herokuapp.com/api/pizzas')
-                    .then((result) => {
-                        // console.log();
-                        this.pizzas = result.data.pizzas
-                    })
-                    .then(() => {
-                       return this.createCart();
-                       
-                    })
-                    .then((result) =>{
+        axios
+          .get(url)
+          .then((result) =>{
+            this.cart = result.data;
+          });
+      },
 
-                        //console.log(result.data);
+      pizzaImage(pizza){
+        return `./img/${pizza.size}.png`
+      },
 
-                        this.cartId=result.data.cart_code;
+      message: 'Eating pizzas',
+      username:'0192081',
+      pizzas: [],
+      featuredpizzas: [],
+      cartId:'',
+      cart: {total : 0},
+      paymentMessege:'',
+      payNow: false,
+      paymentAmount: '',
 
-                    });
+      add(pizza){
+        //to be able to add pizza to the cart, I need a cart Id..
+          //alert(pizza.flavour + " : " + pizza.size)
+          const params = {
+            cart_code : this.cartId,
+            pizza_id : pizza.id
+          }
 
-                    
-
-            },
-            createCart(){
-                //api/pizza-cart/create
-
-                return axios.get('https://pizza-cart-api.herokuapp.com/api/pizza-cart/create?username=' + this.username)
-
-            },
-            showCart() {
-                const url = `https://pizza-cart-api.herokuapp.com/api/pizza-cart/${this.cartId}/get`;
-
-                axios
-                .get(url)
-                .then((result) => {
-                 this.cart = result.data;
-
-                });
-                
-                 
-            },
-
-            pizzaImage(pizza) {
-                return `./img/${pizza.size}.png`
-            },
-  
-
-        
-            username: '0192081',
-            pizzas : [],
-            cartId : '',
-            cart : { total : 0 },
-
-            add(pizza){
-                //to be able to add pizza to the cart I need a cart Id...
-                const params = {
-                    cart_code: this.cartId,
-                    pizza_id: pizza.id 
-                }
-               
-                 axios
-                .post('https://pizza-cart-api.herokuapp.com/api/pizza-cart/add', params)
-                .then(() => {  
-                 this.message = "Pizza added to the cart"
-                 this.showCart();
-              })
-                .catch(err => alert (err));
-                
-                //alert(pizza.id)
-                
-            }
-
+          axios
+            .post('https://pizza-cart-api.herokuapp.com/api/pizza-cart/add', params)
+            .then(()=>{
+              this.message= "pizza added to the cart"
+              this.showCart();
+            })
+            .then(()=>{
+              // if (this.pizza.length<=3){
+              //   this.featuredPizzas=this.featuredPizzas();
+              //   return this.featuredPizzas;
+              // }
+              return this.featuredPizzas();
+              
+            })
+            .then(()=>{
+              return this.postfeaturedPizzas();
+            })
+            .catch(err=>alert(err));
+          //alert(pizza.id)
+      },
+      remove(pizza){
+        // /api/pizza-cart/remove
+        const params = {
+          cart_code : this.cartId,
+          pizza_id : pizza.id
         }
-    });
+
+        axios
+          .post('https://pizza-cart-api.herokuapp.com/api/pizza-cart/remove', params)
+          .then(()=>{
+            this.message= "pizza removed to the cart"
+            this.showCart();
+          })
+          .catch(err=>alert(err));
+
+      },
+      pay(pizza){
+        const params = {
+          cart_code : this.cartId,
+        }
+
+        axios
+          .post('https://pizza-cart-api.herokuapp.com/api/pizza-cart/pay', params)
+          .then(()=>{
+              if(!this.paymentAmount){
+                  this.paymentMessege = 'No amount entered!'
+              }
+              else if(this.paymentAmount >= this.cart.total.toFixed(2)){
+                  this.paymentMessege = 'Payment Sucessful!'
+                  this.message= this.username  +" paid!"
+                  setTimeout(() => {
+                      this.cart.total=0
+                      window.location.reload()
+                  }, 6000);
+  
+              }else{
+                  this.paymentMessege = 'Insufficient Amount!'
+                  setTimeout(() => {
+                      this.cart.total=0
+                  }, 6000);
+              }
+          
+          })
+          .catch(err=>alert(err));
+
+      }
+
+    }
+  });
 })
+
