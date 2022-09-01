@@ -46,7 +46,11 @@ document.addEventListener('alpine:init', () => {
       },
 
       pizzaImage(pizza){
+<<<<<<< HEAD
         return `./img/${pizza.size}.png`
+=======
+        return './img/${pizza.size}.png'
+>>>>>>> f022a318635e4cf484b724aace8d16fc5094f0f5
       },
 
       message: 'Eating pizzas',
@@ -120,6 +124,7 @@ document.addEventListener('alpine:init', () => {
                   setTimeout(() => {
                       this.cart.total=0
                       window.location.reload()
+<<<<<<< HEAD
                   }, 5000);
   
               }else{
@@ -127,6 +132,15 @@ document.addEventListener('alpine:init', () => {
                   setTimeout(() => {
                       this.cart.total=0
                   }, 7000);
+=======
+                  }, 4000);
+  
+              }else{
+                  this.paymentMessege = 'insufficient Amount!'
+                  setTimeout(() => {
+                      this.cart.total=0
+                  }, 4000);
+>>>>>>> f022a318635e4cf484b724aace8d16fc5094f0f5
               }
           
           })
