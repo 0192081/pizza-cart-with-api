@@ -120,13 +120,13 @@ document.addEventListener('alpine:init', () => {
                   setTimeout(() => {
                       this.cart.total=0
                       window.location.reload()
-                  }, 6000);
+                  }, 5000);
   
               }else{
                   this.paymentMessege = 'Insufficient Amount!'
                   setTimeout(() => {
                       this.cart.total=0
-                  }, 6000);
+                  }, 7000);
               }
           
           })
